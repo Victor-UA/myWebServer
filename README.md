@@ -8,5 +8,17 @@
 
 
 ##Команди
++ server
+  + hello
+  + stop
+  + show
+  + hide
 + getPricesFromExcel
-+ Program
+  + fileload
+    + FileName=
+    + Supplier=*(REHAU (default), Accent Plast, Soldi)*
+  + getprices
+  + getrow
+  + getmarkings
+  + getprice
+  + help
