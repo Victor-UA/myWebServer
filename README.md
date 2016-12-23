@@ -6,25 +6,33 @@
 
 *GUID задається у строці запуску*
 
+Приклади:
+
+http://localhost:8080/123/getPricesFromExcel/help?
+
+http://localhost:8080/123/server/hello?
+
+http://localhost:8080/123/getPricesFromExcel/fileload?filename=D:\price.xls&supplier=soldi
+
 
 ##Команди
-+ server
-  + hello
-  + stop
-  + show
-  + hide
-+ getPricesFromExcel
-  + fileload
++ server/
+  + hello?
+  + stop?
+  + show?
+  + hide?
++ getPricesFromExcel/
+  + fileload?
     + FileName=
     + Supplier=
       + REHAU (default)
       + Accent Plast
       + Soldi
-  + getprices
+  + getprices?
     + outputDataType=
       + tabbed strings (default)
       + dictionarylist (JSONEncoded)
-  + getrow
+  + getrow?
     + searchFor= 
       + *a name of column*
     + value=
@@ -37,7 +45,7 @@
     + outputDataType=
       + tabbed strings (default)
       + dictionarylist (JSONEncoded)
-  + getmarkings
+  + getmarkings?
     + "searchFor= 
       + *a name of column*
     + value= 
@@ -47,7 +55,7 @@
       + value starts with
       + equal
       + equal of lowered
-  + getprice
+  + getprice?
     + "searchFor= 
       + *a name of column*
     + value= 
@@ -56,4 +64,4 @@
       + value starts with (default)
       + equal
       + equal of lowered
-  + help
+  + help?
