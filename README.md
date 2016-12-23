@@ -16,9 +16,44 @@
 + getPricesFromExcel
   + fileload
     + FileName=
-    + Supplier=*(REHAU (default), Accent Plast, Soldi)*
+    + Supplier=
+      + REHAU (default)
+      + Accent Plast
+      + Soldi
   + getprices
+    + outputDataType=
+      + tabbed strings (default)
+      + dictionarylist (JSONEncoded)
   + getrow
+    + searchFor= 
+      + *a name of column*
+    + value=
+      + *a value fo searching*
+    + searchOptions=
+      + starts with
+      + value starts with (default)
+      + equal
+      + equal of lowered
+    + outputDataType=
+      + tabbed strings (default)
+      + dictionarylist (JSONEncoded)
   + getmarkings
+    + "searchFor= 
+      + *a name of column*
+    + value= 
+      + *a value fo searching*
+    + searchOptions=
+      + starts with (default)
+      + value starts with
+      + equal
+      + equal of lowered
   + getprice
+    + "searchFor= 
+      + *a name of column*
+    + value= 
+      + *a value fo searching*
+    + searchOptions=
+      + value starts with (default)
+      + equal
+      + equal of lowered
   + help
