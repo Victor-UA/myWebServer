@@ -51,7 +51,7 @@
     + "searchFor= 
       + *a name of column*
     + value= 
-      + *a value fo searching*
+      + *a value for searching*
     + searchOptions=
       + value starts with (default)
       + equal
