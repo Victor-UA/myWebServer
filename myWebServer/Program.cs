@@ -94,7 +94,7 @@ namespace myWebServer
                 }
                 else
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(1000);
                 }
             }
             ws.Stop();
