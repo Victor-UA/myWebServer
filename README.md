@@ -56,7 +56,7 @@ http://localhost:8080/123/getPricesFromExcel/fileload?filename=D:\price.xls&supp
       + equal
       + equal of lowered
   + getprice?
-    + "searchFor= 
+    + searchFor= 
       + *a name of column*
     + value= 
       + *a value for searching*
