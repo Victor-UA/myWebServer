@@ -10,9 +10,9 @@ namespace myWebServer
     public class WebServer
     {
         private readonly HttpListener _listener = new HttpListener();
-        private readonly Func<HttpListenerRequest, string> _responderMethod;
+        private readonly Func<HttpListenerRequest, string, string> _responderMethod;
 
-        public WebServer(string[] prefixes, Func<HttpListenerRequest, string> method)
+        public WebServer(string[] prefixes, Func<HttpListenerRequest, string, string> method)
         {
             if (!HttpListener.IsSupported)
                 throw new NotSupportedException(
@@ -41,11 +41,7 @@ namespace myWebServer
                 Console.WriteLine("Listener is not started");
             }
             
-        }
-
-        public WebServer(Func<HttpListenerRequest, string> method, params string[] prefixes)
-            : this(prefixes, method)
-        { }
+        }        
 
         public void Run()
         {
@@ -59,10 +55,27 @@ namespace myWebServer
                     {
                         ThreadPool.QueueUserWorkItem((c) =>
                         {
-                            var ctx = c as HttpListenerContext;
+
+                            HttpListenerContext ctx = c as HttpListenerContext;
+                            string GUID = string.Empty;
+                            if (ctx.Request.Cookies == null || ctx.Request.Cookies.Count == 0)
+                            {
+                                GUID = Guid.NewGuid().ToString();
+                                ctx.Response.Cookies.Add(new Cookie("guid", GUID));
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    GUID = ctx.Request.Cookies["guid"].ToString();
+                                }
+                                catch (Exception)
+                                {
+                                }
+                            }
                             try
                             {
-                                string rstr = _responderMethod(ctx.Request);
+                                string rstr = _responderMethod(ctx.Request,GUID);
                                 //byte[] buf = Encoding.UTF8.GetBytes(rstr);
                                 byte[] buf = Encoding.Default.GetBytes(rstr);
                                 ctx.Response.ContentLength64 = buf.Length;
@@ -94,7 +107,7 @@ namespace myWebServer
                     return "Ok!\nHello my dear friend! I'm so glad to see you!";
                 case "stop":
                     Stop();
-                    getPricesFromExcel.ExcelClose();
+                    //GetPricesFromExcel.ExcelClose();
                     Environment.Exit(0);
                     return "Ok!\nWebserver is stopped";
                 case "show":

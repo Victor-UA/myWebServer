@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Specialized;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Data;
 using Excel;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace myWebServer
 {
-    class getPricesFromExcel
+    class GetPricesFromExcel
     {
-        //private static Excel.Application excelApp;
-        private static DataSet excelDataSet;
-        private static DataSet pricesDataSet;
-        public static string Execute(string Command, NameValueCollection QueryString)
+        public GetPricesFromExcel(string guid)
+        {
+            GUID = guid;
+        }
+
+        static public Dictionary<string, GetPricesFromExcel> Sessions { get; set; } =
+            new Dictionary<string, GetPricesFromExcel>();
+
+        public string GUID { get; private set; }
+
+        private DataSet excelDataSet;
+        private DataSet pricesDataSet;
+        public string Execute(string Command, NameValueCollection QueryString)
         {            
             switch (Command.ToLower())
             {
@@ -44,8 +50,9 @@ namespace myWebServer
             
         }
 
-        public static void ExcelClose()
+        public void ExcelClose()
         {
+            Sessions.Remove(GUID);
             /*
             try
             {
@@ -64,7 +71,7 @@ namespace myWebServer
             
         }
 
-        private static string FileLoad(NameValueCollection QueryString)
+        private string FileLoad(NameValueCollection QueryString)
         {
             if (QueryString.AllKeys.Contains("help", StringComparer.CurrentCultureIgnoreCase))
             {
@@ -122,7 +129,7 @@ namespace myWebServer
                 return "Error!\nFileName not found";
             }
         }
-        private static string Prepare(NameValueCollection QueryString)
+        private string Prepare(NameValueCollection QueryString)
         {
             int Count = 0;
             string supplier = "";
@@ -148,7 +155,7 @@ namespace myWebServer
                 ;
         }
 
-        private static string getRow(NameValueCollection QueryString)
+        private string getRow(NameValueCollection QueryString)
         {
             if (QueryString.AllKeys.Contains("help", StringComparer.CurrentCultureIgnoreCase))
             {
@@ -285,7 +292,7 @@ namespace myWebServer
             return (Result.Equals(string.Empty) ? "Error!Data is not found\n" : "Ok!\n") + Result;
         }
 
-        private static string getPrices(NameValueCollection QueryString)
+        private string getPrices(NameValueCollection QueryString)
         {
             if (QueryString.AllKeys.Contains("help", StringComparer.CurrentCultureIgnoreCase))
             {
@@ -327,7 +334,7 @@ namespace myWebServer
             
             return "Ok!\n" + Result;
         }
-        private static string getPrice(NameValueCollection QueryString)
+        private string getPrice(NameValueCollection QueryString)
         {
             if (QueryString.AllKeys.Contains("help", StringComparer.CurrentCultureIgnoreCase))
             {
@@ -425,7 +432,7 @@ namespace myWebServer
 
             return (Result == string.Empty ? "Error!Data is not found\n" : "Ok!\n") + Result;
         }
-        private static string getMarkings(NameValueCollection QueryString)
+        private string getMarkings(NameValueCollection QueryString)
         {
             if (QueryString.AllKeys.Contains("help", StringComparer.CurrentCultureIgnoreCase))
             {
@@ -525,7 +532,7 @@ namespace myWebServer
         }
 
 
-        private static int RowIndexOf(DataRow row, object obj)
+        private int RowIndexOf(DataRow row, object obj)
         {
             for (int i = 0; i < row.ItemArray.Length; i++)
             {
@@ -537,7 +544,7 @@ namespace myWebServer
             return -1;
         }
 
-        private static int RowIndexOfStartsWith(DataRow row, string search)
+        private int RowIndexOfStartsWith(DataRow row, string search)
         {
             for (int i = 0; i < row.ItemArray.Length; i++)
             {
@@ -549,11 +556,11 @@ namespace myWebServer
             return -1;
         }
 
-        private static int GetPricesFromSheet(DataTable Prices, int sheetNum)
+        private int GetPricesFromSheet(DataTable Prices, int sheetNum)
         {
             return GetPricesFromSheet(Prices, sheetNum, "REHAU");
         }
-        private static int GetPricesFromSheet(DataTable Prices, int sheetNum, string Supplier)
+        private int GetPricesFromSheet(DataTable Prices, int sheetNum, string Supplier)
         {
             int Marking2Column = -1;
             int MarkingColumn = -1;
@@ -971,7 +978,7 @@ namespace myWebServer
 
         }
 
-        private static string Row2outputDataType(DataRow Row, DataTable Table, string outputDataType)
+        private string Row2outputDataType(DataRow Row, DataTable Table, string outputDataType)
         {
             string Result = string.Empty;
 
@@ -1020,7 +1027,7 @@ namespace myWebServer
             }
             return Result;
         }
-        private static string Rows2outputDataType(DataRowCollection Rows, DataTable Table, string outputDataType)
+        private string Rows2outputDataType(DataRowCollection Rows, DataTable Table, string outputDataType)
         {
             string Result = string.Empty;
             foreach (DataRow Row in Rows)
@@ -1039,7 +1046,7 @@ namespace myWebServer
             }
             return Result;
         }
-        private static string GetPricesFormDataSetSheet(DataTable Prices, string outputDataType)
+        private string GetPricesFormDataSetSheet(DataTable Prices, string outputDataType)
         {
             string Result = Rows2outputDataType(Prices.Rows, Prices, outputDataType);
             /*
